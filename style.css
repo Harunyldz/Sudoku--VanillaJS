@@ -1,0 +1,355 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    width: 100%;
+    height: 100vh;
+}
+
+body {
+    background-color: white;
+    color: #265073;
+    display: grid;
+    place-items: center;
+    font-family: "Source Sans 3", sans-serif;
+}
+
+/****************************************mainDiv styles***********************************/
+#mainDiv {
+    width: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    cursor: default;
+}
+
+/****************************************header styles***********************************/
+#header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 0 10px;
+    cursor: default;
+}
+
+.levelsDiv {
+    display: flex;
+}
+
+.levelsDiv label {
+    font-weight: 600;
+}
+
+.levelsDiv #levels {
+    border: none;
+    font-family: "Source Sans 3", sans-serif;
+    color: #adb6c2;
+    font-weight: 600;
+    font-size: 16px;
+    outline: none;
+}
+
+.mistakeDiv {
+    color: #adb6c2;
+}
+
+.mistakeDiv span>span {
+    color: #265073;
+}
+
+.scoreDiv>span {
+    color: #adb6c2;
+}
+
+.scoreDiv #score {
+    color: #265073;
+}
+
+.timePauseDiv {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.timeDiv {
+    color: #adb6c2;
+}
+
+.timeDiv #hour{
+    visibility: hidden;
+}
+
+#pause {
+    background-color: #eaeef4;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#pause:hover {
+    background-color: #d2dce9;
+}
+
+#pause img {
+    width: 40%;
+}
+
+#newGameBtn {
+    border: none;
+    color: #fff;
+    background-color: #5a7bc0;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#newGameBtn:hover {
+    filter: brightness(1.1);
+    transition: filter .2s ease-in-out;
+}
+
+/****************************************gameBody styles***********************************/
+#gameBody {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 10px;
+}
+
+.leftSide{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/****************************************gameArea styles***********************************/
+#gameArea {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+    padding: 0;
+    border: 1px solid #265073;
+}
+#playIcon{
+    position: absolute;
+    width: 50px;
+    display: none;
+}
+
+.cell {
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border: 1px solid rgb(224, 224, 224);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-collapse: collapse;
+    color: #265073;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.cell:nth-child(27n+19),
+.cell:nth-child(27n+20),
+.cell:nth-child(27n+21),
+.cell:nth-child(27n+22),
+.cell:nth-child(27n+23),
+.cell:nth-child(27n+24),
+.cell:nth-child(27n+25),
+.cell:nth-child(27n+26),
+.cell:nth-child(27n+27) {
+    border-bottom: 2px solid #265073;
+}
+
+.cell:nth-child(3n) {
+    border-right: 2px solid #265073;
+}
+
+.cell:nth-child(73),
+.cell:nth-child(74),
+.cell:nth-child(75),
+.cell:nth-child(76),
+.cell:nth-child(77),
+.cell:nth-child(78),
+.cell:nth-child(79),
+.cell:nth-child(80),
+.cell:nth-child(81) {
+    border-bottom: 1px solid rgb(224, 224, 224);
+}
+
+
+.cell:nth-child(9n+9) {
+    border-right: 1px solid rgb(224, 224, 224);
+}
+
+/********************************keyArea styles*****************************************/
+
+#keyArea {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 362px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/********************************topSection styles***************************************/
+#topSection {
+    width: 100%;
+    height: 40%;
+    display: flex;
+}
+
+span {
+    font-weight: 700;
+}
+
+#topSection div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+    position: relative;
+}
+
+#topSection .imgDiv {
+    padding: 10px;
+    width: 50px;
+    border-radius: 50%;
+    background-color: #eaeef4;
+    cursor: pointer;
+}
+
+.imgDiv img{
+    width: 100%;
+}
+
+#topSection div {
+    color: #325aaf;
+}
+
+#topSection .imgDiv:hover {
+    background-color: #d2dce9;
+}
+
+#topSection #hintDiv, #notesDiv{
+    cursor: pointer;
+}
+
+#notesDiv:hover >div{
+    background-color: #d2dce9;
+}
+
+#hintDiv:hover>div{
+    background-color: #d2dce9;
+}
+
+#onOff {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #adb6c2;
+    color: #fff;
+    text-align: center;
+    line-height: 25px;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 1px 5px;
+    border-radius: 45%;
+}
+
+#hintCount {
+    position: absolute;
+    top: -5px;
+    right: 0px;
+    width: 25px;
+    background-color: #325aaf;
+    color: #fff;
+    text-align: center;
+    line-height: 25px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+
+/**********************************Numpad styles*******************************************************/
+#numPad {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 4px;
+}
+
+.number {
+    background-color: #eaeef4;
+    border-radius: 5px;
+    color: #325aaf;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.number:hover {
+    background-color: #d2dce9;
+}
+
+.loseModal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    padding: 20px;
+    gap: 10px;
+}
+
+.loseModal p{
+    color: #adb6c2;
+    font-weight: 600;
+}
+
+#newGameBtnModal{
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    color: #325aaf;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#newGameBtnModal:hover{
+    border-bottom: 1px solid #325aaf;
+    transition: .5s border;
+}

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="mainDiv">
+        <div id="header">
+            <div class="levelsDiv">
+                <label for="levels">Zorluk: </label>
+                <select name="levels" id="levels">
+                    <option value="easy">Kolay</option>
+                    <option value="middle">Orta</option>
+                    <option value="hard">Zor</option>
+                    <option value="expert">Uzman</option>
+                    <option value="master">Usta</option>
+                </select>
+            </div>
+            <div class="mistakeDiv">
+                <span>Hatalar: <span><span id="mistakeCount"> 0</span> / 3</span></span>
+            </div>
+            <div class="scoreDiv">
+                <span>Puan: <span id="score">50</span></span>
+            </div>
+            <div class="timePauseDiv">
+                <div class="timeDiv">
+                    <span id="hour">00:</span><span id="minute">00:</span><span id="second">00</span>
+                </div>
+                <div id="pause">
+                    <img id="pausePlay" src="./assets/pause.svg" alt="">
+                </div>
+            </div>
+            <div>
+                <button id="newGameBtn">Yeni Oyun</button>
+            </div>
+        </div>
+        <div id="gameBody">
+            <div class="leftSide">
+                <div id="gameArea">
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                </div>
+                <div id="playIcon">
+                    <img src="./assets/play.svg" alt="">
+                </div>
+            </div>
+            <div id="keyArea">
+                <div id="topSection">
+                    <div>
+                        <div class="imgDiv" id="undo">
+                            <img src="./assets/back.svg" alt="">
+                        </div>
+                        <span>Geri Al</span>
+                    </div>
+                    <div>
+                        <div class="imgDiv" id="delete">
+                            <img src="./assets/eraser.svg" alt="">
+                        </div>
+                        <span>Sil</span>
+                    </div>
+                    <div>
+                        <div id="notesDiv">
+                            <div class="imgDiv">
+                                <img class="img1" src="./assets/pen.svg" alt="">
+                            </div>
+                            <span id="onOff">OFF</span>
+                        </div>
+                        <span>Notlar</span>
+                    </div>
+                    <div>
+                        <div id="hintDiv">
+                            <div class="imgDiv">
+                                <img src="./assets/lamp.svg" alt="">
+                            </div>
+                            <span id="hintCount">3</span>
+                        </div>
+                        <span>İpucu</span>
+                    </div>
+                </div>
+                <div id="numPad">
+                    <div class="number" data-number-value="1">1</div>
+                    <div class="number" data-number-value="2">2</div>
+                    <div class="number" data-number-value="3">3</div>
+                    <div class="number" data-number-value="4">4</div>
+                    <div class="number" data-number-value="5">5</div>
+                    <div class="number" data-number-value="6">6</div>
+                    <div class="number" data-number-value="7">7</div>
+                    <div class="number" data-number-value="8">8</div>
+                    <div class="number" data-number-value="9">9</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="loseModal">
+        <h3>Oyun Bitti</h3>
+        <p>3 hata yaptın ve bu oyunu kaybettin</p>
+        <button id="newGameBtnModal">Yeni Oyun</button>
+    </div>
+
+
+    <script type="module" src="./script.js"></script>
+</body>
+
+</html>
