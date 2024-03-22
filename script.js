@@ -35,6 +35,18 @@ cells.forEach((cell, index) => {
     cell.addEventListener("click", () => {
         selectedCellIndex = index
         console.log(selectedCellIndex, ".cell clicked")
+        cells.forEach(cell=>{
+            cell.style.backgroundColor="#fff"
+        })
+        if(cell.textContent){
+            const getTextContent=cell.textContent
+            cells.forEach(cell=>{
+                // tıklanan hücreyle aynı değere sahip diğer hücreleri işaretle
+                cell.style.backgroundColor=cell.textContent===getTextContent? "#d2dce9":"#fff"
+            })
+        }else{
+            cell.style.backgroundColor="#d2dce9"
+        }
         isCellSelected = true
     })
 })
@@ -45,13 +57,17 @@ numbers.forEach(number => {
     number.addEventListener("click", () => {
         if(isGameStarted){
 
-            const currentCell = cells[selectedCellIndex]
             selectedNumber = number.getAttribute("data-number-value")
             console.log(selectedNumber, " number clicked")
+            const currentCell = cells[selectedCellIndex]
             if (isCellSelected) {
                 const getCellValue = currentCell.getAttribute("data-cell-value")
                 currentCell.style.color = getCellValue === selectedNumber ? "#325aaf" : "red"
                 currentCell.textContent = selectedNumber
+                cells.forEach(cell=>{
+                    //hücreye girilen değerle aynı değere sahip diğer hücreleri işaretle
+                    cell.style.backgroundColor=cell.textContent===currentCell.textContent? "#d2dce9":"#fff"
+                })
                 mistakeCount = getCellValue === selectedNumber ? mistakeCount : mistakeCount += 1
                 if(mistakeCount===3){
                     loseModal.style.display="flex"
@@ -313,6 +329,7 @@ function clearGame() {
     cells.forEach(cell => {
         cell.textContent = ""
         cell.style.color = "#265073"
+        cell.style.backgroundColor="#fff"
         cell.setAttribute("data-cell-value", "")
         cell.setAttribute("data-isOpen", "")
         cell.setAttribute("data-selected-value", "")
