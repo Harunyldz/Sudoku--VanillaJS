@@ -181,10 +181,28 @@
             </div>
         </div>
     </div>
+    <div id="overlay"></div>
     <div class="loseModal">
         <h3>Oyun Bitti</h3>
         <p>3 hata yaptın ve bu oyunu kaybettin</p>
         <button id="newGameBtnModal">Yeni Oyun</button>
+    </div>
+    <div class="newGameModal">
+        <div class="modalBody">
+            <div>
+                <h2>Oyun Seviyesi Seç</h2>
+                <p>Oyundaki mevcut ilerleme kaybedilecek</p>
+            </div>
+            <div class="modalLevels">
+                <div class="modalLevelItem modalItem" data-level-value="easy"><img src="./assets/sudoku.svg" alt="">Kolay</div>
+                <div class="modalLevelItem modalItem" data-level-value="middle"><img src="./assets/sudoku.svg" alt="">Orta</div>
+                <div class="modalLevelItem modalItem" data-level-value="hard"><img src="./assets/sudoku.svg" alt="">Zor</div>
+                <div class="modalLevelItem modalItem" data-level-value="expert"><img src="./assets/sudoku.svg" alt="">Uzman</div>
+                <div class="modalLevelItem modalItem" data-level-value="master"><img src="./assets/sudoku.svg" alt="">Usta</div>
+                <div class="modalItem" id="modalRestartBtn"><img src="./assets/back.svg" alt="">Yeniden Başla</div>
+            </div>
+        </div>
+        <button id="modalCancelBtn">İptal</button>
     </div>
 
 

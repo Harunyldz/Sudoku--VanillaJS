@@ -3,9 +3,15 @@ const numbers = document.querySelectorAll(".number")
 const pausePlayImg = document.getElementById("pausePlay")
 const playIcon = document.getElementById("playIcon")
 const mistakeSpan = document.getElementById("mistakeCount")
+const loseModal=document.querySelector(".loseModal")
+const overlay=document.getElementById("overlay")
+const newGameModal=document.querySelector(".newGameModal")
+const newGameBtnModal=document.getElementById("newGameBtnModal")
+const modalCancelBtn=document.getElementById("modalCancelBtn")
+const modalRestartBtn=document.getElementById("modalRestartBtn")
+const modalLevels=document.querySelectorAll(".modalLevelItem")
 
-//Lose modal ı yerleştir
-
+let isGameStarted=true
 let selectedNumber = ""
 let isCellSelected = false
 let selectedCellIndex = ""
@@ -35,21 +41,28 @@ cells.forEach((cell, index) => {
 
 numbers.forEach(number => {
     const cells = document.querySelectorAll(".cell")
+   
     number.addEventListener("click", () => {
-        const currentCell = cells[selectedCellIndex]
-        selectedNumber = number.getAttribute("data-number-value")
-        console.log(selectedNumber, " number clicked")
-        if (isCellSelected) {
-            const getCellValue = currentCell.getAttribute("data-cell-value")
-            currentCell.style.color = getCellValue === selectedNumber ? "#325aaf" : "red"
-            currentCell.textContent = selectedNumber
-            mistakeCount = getCellValue === selectedNumber ? mistakeCount : mistakeCount += 1
-            if(mistakeCount===3){
-                alert("Oyunu kaybettiniz!") //burada yeni oyun için bir modal yap********************************************
-            }
-            displayMistakes(mistakeCount)
-            // geri al tuşuna tıklandığında seçilmiş olan değeri kullanabilmek için 
-            currentCell.setAttribute("data-selected-value", selectedNumber)
+        if(isGameStarted){
+
+            const currentCell = cells[selectedCellIndex]
+            selectedNumber = number.getAttribute("data-number-value")
+            console.log(selectedNumber, " number clicked")
+            if (isCellSelected) {
+                const getCellValue = currentCell.getAttribute("data-cell-value")
+                currentCell.style.color = getCellValue === selectedNumber ? "#325aaf" : "red"
+                currentCell.textContent = selectedNumber
+                mistakeCount = getCellValue === selectedNumber ? mistakeCount : mistakeCount += 1
+                if(mistakeCount===3){
+                    loseModal.style.display="flex"
+                    overlay.style.display="block"
+                    clearInterval(gameTimer)
+                    isGameStarted=false
+                }
+                displayMistakes(mistakeCount)
+                // geri al tuşuna tıklandığında seçilmiş olan değeri kullanabilmek için 
+                currentCell.setAttribute("data-selected-value", selectedNumber)
+        }
         }
     })
 })
@@ -57,7 +70,7 @@ numbers.forEach(number => {
 const selectLevels = document.getElementById("levels")
 selectLevels.addEventListener("change", () => {
     selectedLevel = selectLevels.value
-    setLevel(selectedLevel)
+    setLevel()
     getNewGame()
 })
 
@@ -75,6 +88,33 @@ newGameBtn.addEventListener("click", () => {
     getNewGame()
 })
 
+newGameBtnModal.addEventListener("click",()=>{
+    loseModal.style.display="none"
+    newGameModal.style.display="block"
+})
+
+modalCancelBtn.addEventListener("click",()=>{
+    newGameModal.style.display="none"
+    overlay.style.display="none"
+})
+
+modalRestartBtn.addEventListener("click",()=>{
+    overlay.style.display="none"
+    newGameModal.style.display="none"
+    getNewGame()
+})
+
+modalLevels.forEach(modalLevel=>{
+    modalLevel.addEventListener("click",()=>{
+        let selectedModalLevel=modalLevel.getAttribute("data-level-value")
+        newGameModal.style.display="none"
+        overlay.style.display="none"
+        selectLevels.value=selectedModalLevel
+        selectedLevel = selectLevels.value
+        setLevel()
+        getNewGame()
+    })
+})
 
 //sudoku tahtasındaki rakamların hazırlanışı için gerekli fonksiyonlar
 function rowSafe(board, row, num) {
@@ -288,6 +328,8 @@ function getNewGame() {
     getOpenedCellsIndexes()
     showOpenedCells()
     startTimer()
+    displayMistakes(mistakeCount)
+    isGameStarted=true
 }
 
 function displayMistakes(mistakeCount) {

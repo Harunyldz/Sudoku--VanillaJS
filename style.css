@@ -26,6 +26,7 @@ body {
     justify-content: center;
     flex-direction: column;
     cursor: default;
+    padding: 20px;
 }
 
 /****************************************header styles***********************************/
@@ -322,15 +323,29 @@ span {
 .number:hover {
     background-color: #d2dce9;
 }
+#overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Opaklık burada ayarlanıyor */
+    display: none;
+    z-index: 999; 
+}
 
 .loseModal{
+    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: #fff;
-    padding: 20px;
+    padding: 40px;
     gap: 10px;
+    border-radius: 10px;
+    display: none;
+    z-index: 1000;
 }
 
 .loseModal p{
@@ -347,9 +362,99 @@ span {
     color: #325aaf;
     font-weight: bold;
     font-size: 14px;
+    margin-top: 20px;
 }
 
 #newGameBtnModal:hover{
     border-bottom: 1px solid #325aaf;
     transition: .5s border;
 }
+
+.newGameModal{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    padding: 20px;
+    gap: 10px;
+    border-radius: 10px;
+    display: none;
+    z-index: 1000;
+    width: 350px;
+}
+
+.modalBody{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.modalBody h2{
+    margin-bottom: 10px;
+}
+
+.modalBody>div{
+    border-bottom: 1px solid #d2dce9;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.modalLevels{
+    border-radius: 5px;
+    width: 100%;
+    background-color:#f3f6fa ;
+}
+
+.modalItem{
+    display: flex;
+    align-items: center;
+    color: #325aaf;
+    font-weight: 600;
+    border-bottom: 1px solid #d2dce9;
+    padding:0 10px;
+    gap: 10px;
+    cursor: pointer;
+    height: 50px;
+}
+.modalItem:hover{
+    background-color: #d2dce9;
+    transition: .3s ;
+}
+
+.modalItem img{
+    width: 30px;
+}
+.modalItem:last-child {
+    padding-left: 15px;
+    border-bottom: none;
+}
+.modalItem:last-child img {
+    width: 20px;
+}
+
+#modalCancelBtn{
+    width: 100%;
+    height: 50px;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
+    color: #325aaf;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#modalCancelBtn:hover{
+    transition: .2s;
+    color: #5a7bc0;
+}
+
