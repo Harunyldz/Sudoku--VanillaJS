@@ -172,6 +172,25 @@ body {
     cursor: pointer;
 }
 
+@keyframes hintCellSign{
+    0%{
+        opacity: 0;
+        background-color: #D83F31;
+    }
+    50%{
+        background-color: #D83F31;
+    }
+    100%{
+        opacity: 1;
+        background-color: #adb6c2;
+        color: white;
+    }
+}
+
+.hintCell{
+    animation: hintCellSign 5s ;
+}
+
 .cell:nth-child(27n+19),
 .cell:nth-child(27n+20),
 .cell:nth-child(27n+21),
