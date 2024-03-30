@@ -155,6 +155,7 @@ body {
     position: absolute;
     width: 50px;
     display: none;
+    cursor: pointer;
 }
 
 .cell {
@@ -481,4 +482,25 @@ span {
 #modalCancelBtn:hover {
     transition: .2s;
     color: #5a7bc0;
+}
+
+.noteBoard{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    /* gap: 1px; */
+    /* background-color: #cad9f7; */
+    /* padding: 2px; */
+}
+
+.noteCell{
+    color: #325aaf;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: bold;
+    cursor: pointer;
 }

@@ -17,7 +17,12 @@ const deleteDiv = document.getElementById("delete")
 const selectLevels = document.getElementById("levels")
 const pausePlayDiv = document.getElementById("pause")
 const newGameBtn = document.getElementById("newGameBtn")
+const notesDiv = document.getElementById("notesDiv")
+const notesImg = document.getElementById("notesImg")
+const onOffSpan = document.getElementById("onOff")
 
+
+//Note mevzusundaki değişmleri kontrol et yeni oyun açılırsa vs  note silmeyi ekle ayrıca her hücreye ayrı not eklenebilmesini sağla
 let isGameStarted = true
 let selectedNumber = ""
 let selectedCellIndex = ""
@@ -34,6 +39,8 @@ let mistakeCount = 3
 let hintCount = 3
 let getUnOpenedCellsArray = []
 let lastClickedCellsIndexes = []
+let isNotesActive = false
+let selectedNotesArray=[]
 
 import levels from "./utils/levels.js"
 
@@ -71,36 +78,47 @@ numbers.forEach(number => {
             selectedNumber = number.getAttribute("data-number-value")
             console.log(selectedNumber, " number clicked")
             const currentCell = cells[selectedCellIndex]
-            if (selectedCellIndex) {
-                const getCellValue = currentCell.getAttribute("data-cell-value")//seçilen hücrede olması gereken değeri getirdi
-                lastClickedCellsIndexes.push({ cellindex: selectedCellIndex, value: currentCell.textContent })//geri al işlemi için tıklanmış hücrenin bir önceki textcontent değerini ve index değerini diziye ekledi
-                console.log("son tıklananlar: ", lastClickedCellsIndexes)
-                currentCell.style.color = getCellValue === selectedNumber ? "#325aaf" : "red"
-                console.log("selcted ındex value: ", cells[selectedCellIndex].textContent)
-                if (cells[selectedCellIndex].textContent === selectedNumber) {//seçilmiş hücrenin değeri girilen sayıya eşitse
-                    cells[selectedCellIndex].textContent = ""
-                    currentCell.setAttribute("data-selected-value", "")
+            if (selectedCellIndex >= 0) {
+                if (isNotesActive) {
+                    console.log("selectedcellIndex: ", selectedCellIndex)
+                    currentCell.textContent = ""
+                    addSelectedNoteCells(selectedCellIndex, selectedNumber)
+                    showSelectedNotes(currentCell, selectedCellIndex)
+                    console.log("selctedNotesArray= ", selectedNotesArray)
+
                 } else {
-                    currentCell.textContent = selectedNumber
-                    mistakeCount = getCellValue === selectedNumber ? mistakeCount : mistakeCount += 1
-                    currentCell.setAttribute("data-selected-value", selectedNumber)
+                    if (currentCell.querySelector("div")) {//eğer seçili hücrede notlar varsa notları kaldır ve text contenti temizle
+                        removeNoteBoard(currentCell,selectedCellIndex)
+                        currentCell.textContent = ""
+                    }
+                    const getCellValue = currentCell.getAttribute("data-cell-value")//seçilen hücrede olması gereken değeri getirdi
+                    lastClickedCellsIndexes.push({ cellindex: selectedCellIndex, value: currentCell.textContent })//geri al işlemi için tıklanmış hücrenin bir önceki textcontent değerini ve index değerini diziye ekledi
+                    currentCell.style.color = getCellValue === selectedNumber ? "#325aaf" : "red"
+                    if (currentCell.textContent === selectedNumber) {//seçilmiş hücrenin değeri girilen sayıya eşitse
+                        console.log("burada")
+                        currentCell.textContent = ""
+                        currentCell.setAttribute("data-selected-value", "")
+                    } else {
+                        currentCell.textContent = selectedNumber
+                        mistakeCount = getCellValue === selectedNumber ? mistakeCount : mistakeCount += 1
+                        currentCell.setAttribute("data-selected-value", selectedNumber)
+                    }
+                    console.log("selcted ındex value cahged: ", currentCell.textContent)
+                    console.log("selctedındex: ", selectedCellIndex)
+                    cells.forEach(cell => {
+                        //hücreye girilen değerle aynı değere sahip diğer hücreleri işaretle
+                        if (cell.textContent)
+                            cell.style.backgroundColor = cell.textContent === currentCell.textContent ? "#d2dce9" : "#fff"
+                    })
+                    if (mistakeCount === 3) {
+                        loseModal.style.display = "flex"
+                        overlay.style.display = "block"
+                        clearInterval(gameTimer)
+                        isGameStarted = false
+                    }
+                    displayMistakes(mistakeCount)
                 }
-                console.log("selcted ındex value cahged: ", cells[selectedCellIndex].textContent)
-                console.log("selctedındex: ", selectedCellIndex)
-                // if(cells[selectedCellIndex])
-                cells.forEach(cell => {
-                    //hücreye girilen değerle aynı değere sahip diğer hücreleri işaretle
-                    if (cell.textContent)
-                        cell.style.backgroundColor = cell.textContent === currentCell.textContent ? "#d2dce9" : "#fff"
-                })
-                if (mistakeCount === 3) {
-                    loseModal.style.display = "flex"
-                    overlay.style.display = "block"
-                    clearInterval(gameTimer)
-                    isGameStarted = false
-                }
-                displayMistakes(mistakeCount)
-                // play ikonuna tıklandığında seçilmiş olan değeri gösterebilmek için 
+
             }
         }
     })
@@ -122,6 +140,9 @@ pausePlayDiv.addEventListener("click", () => {
     }
 })
 
+playIcon.addEventListener("click", () => {
+    continueGame()
+})
 newGameBtn.addEventListener("click", () => {
     getNewGame()
 })
@@ -171,11 +192,25 @@ undoDiv.addEventListener("click", () => {
 })
 
 deleteDiv.addEventListener("click", () => {
-    if (selectedCellIndex) {
+    if (selectedCellIndex >= 0) {
         //geri al işlemini sağlamak için var olan değer diziye eklenip sonra text content temizlenecek
         lastClickedCellsIndexes.push({ cellindex: selectedCellIndex, value: cells[selectedCellIndex].textContent })
         cells[selectedCellIndex].textContent = ""
         cells[selectedCellIndex].setAttribute("data-selected-value", "")// play ikonuna tıklandığında seçilmiş olan değeri gösterebilmek için
+    }
+})
+
+notesDiv.addEventListener("click", () => {
+    if (!isNotesActive) {
+        notesImg.style.border = "2px solid #325aaf"
+        onOffSpan.textContent = "ON"
+        onOffSpan.style.backgroundColor = "#325aaf"
+        isNotesActive = true
+    } else {
+        notesImg.style.border = "none"
+        onOffSpan.textContent = "OFF"
+        onOffSpan.style.backgroundColor = "#adb6c2"
+        isNotesActive = false
     }
 })
 
@@ -187,6 +222,7 @@ hintDiv.addEventListener("click", () => {
             hintCell.textContent = hintCell.getAttribute("data-cell-value")
             hintCell.setAttribute("data-isOpen", "opened")
             hintCell.classList.add("hintCell")
+            hintCell.style.color = "#325aaf"
             displayHintCounts()
             console.log("unopenedcells: ", getUnOpenedCellsArray)
         }
@@ -370,12 +406,13 @@ function continueGame() {
     playIcon.style.display = "none"
 
     //pauseGame fonk. çalıştığında textcontentler silindiğinden tekrar gösterebilmek için
-    cells.forEach(cell => {
+    cells.forEach((cell,index)=> {
         if (cell.getAttribute("data-isOpen")) {
             cell.textContent = cell.getAttribute("data-cell-value")
         } if (cell.getAttribute("data-selected-value")) {
             cell.textContent = cell.getAttribute("data-selected-value")
         }
+        showSelectedNotes(cell,index)
     })
     pausePlayImg.src = "./assets/pause.svg"
     startTimer()
@@ -397,6 +434,8 @@ function clearGame() {
     mistakeCount = 0
     hintCount = 3
     lastClickedCellsIndexes.length = 0 //son tıklananlar dizisini sıfırla
+    selectedCellIndex = ""
+    isNotesActive = false
 }
 
 function getNewGame() {
@@ -432,4 +471,67 @@ function getOneUnOpenedCell() {
     })
     const shuffledUnOpenedCellsArray = shuffle(getUnOpenedCellsArray) //getUnOpenedCellsArray dizisini shuffle fonk. ile karıştır ve geri shuffledUnOpenedCellsArray dizisine ata
     return shuffledUnOpenedCellsArray[0]  //shuffledUnOpenedCellsArray dizisinin ilk elemanını seç ve
+}
+
+function createNoteBoard(selectedNoteCell) {
+    const noteBoardDiv = document.createElement("div")
+    noteBoardDiv.classList.add("noteBoard")
+    selectedNoteCell.appendChild(noteBoardDiv)
+    for (let i = 0; i < 9; i++) {
+        const noteCellDiv = document.createElement("div")
+        noteCellDiv.classList.add("noteCell")
+        noteBoardDiv.appendChild(noteCellDiv)
+        noteCellDiv.setAttribute("data-note-value", i + 1)
+    }
+}
+
+function addSelectedNoteCells(cellIndex, noteIndex) {
+    const index = isCellHasNoteBoard(cellIndex)
+    const selectedCellIndexInArray = selectedNotesArray.findIndex(item => item.index === cellIndex)
+    if (index !== -1) {//eğer seçilen hücreye daha önce de note eklenmişse
+        if(!selectedNotesArray[index].notes.includes(noteIndex)){ //eğer seçilen note değeri dizide yoksa diziye ekle
+            selectedNotesArray[index].notes.push(noteIndex)
+        }else{
+            const getIndexofNoteCell=selectedNotesArray[index].notes.indexOf(noteIndex)//eğer seçilen not değeri dizide varsa indexini al
+            selectedNotesArray[index].notes.splice(getIndexofNoteCell,1) //alınan indexteki değeri diziden çıkar
+        }
+    } else {//seçilen hücreye ilk kez note ekleniyorsa
+        selectedNotesArray.push({ index: cellIndex, notes: [noteIndex] })
+    }
+}
+
+function isCellHasNoteBoard(cellIndex) {
+    for (let i = 0; i < selectedNotesArray.length; i++) {
+        console.log(selectedNotesArray[i].index)
+        if (selectedNotesArray[i].index === cellIndex) {
+            return i
+        }
+    }
+    return -1
+}
+
+function showSelectedNotes(selectedNoteCell, cellIndex) {
+    const selectedCellIndexInArray = selectedNotesArray.findIndex(item => item.index === cellIndex);
+    if (selectedCellIndexInArray !== -1) { // Eğer hücrenin notları varsa
+        const notesArray = selectedNotesArray[selectedCellIndexInArray].notes;
+        createNoteBoard(selectedNoteCell)//noteCell lerin olduğu noteBoard u oluştur
+
+        const noteCells = selectedNoteCell.querySelectorAll(".noteCell")//seçilen hücredeki noteCelller
+        noteCells.forEach(noteCell => {
+            for (let i = 0; i < notesArray.length; i++) {
+                if (noteCell.getAttribute("data-note-value") === notesArray[i]) {
+                    noteCell.textContent = noteCell.getAttribute("data-note-value")
+                }
+            }
+        })
+    }
+}
+function removeNoteBoard(selectedNoteCell,cellIndex) {
+    const deletedBoardDiv = selectedNoteCell.querySelector("div")
+    if (deletedBoardDiv) {
+        deletedBoardDiv.style.display = "none"
+    }
+    const removeNoteIndex=selectedNotesArray.findIndex(item=>item.index===cellIndex)
+    console.log(removeNoteIndex)
+    selectedNotesArray.splice(removeNoteIndex,1)
 }
