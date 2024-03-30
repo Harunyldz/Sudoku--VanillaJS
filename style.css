@@ -29,6 +29,12 @@ body {
     padding: 20px;
 }
 
+@media screen and (max-width:767px) {
+    #mainDiv {
+        width: 370px;
+    }
+}
+
 /****************************************header styles***********************************/
 #header {
     display: flex;
@@ -38,6 +44,7 @@ body {
     margin-bottom: 10px;
     padding: 0 10px;
     cursor: default;
+    position: relative;
 }
 
 .levelsDiv {
@@ -59,6 +66,29 @@ body {
 
 .mistakeDiv {
     color: #adb6c2;
+}
+
+@media screen and (max-width:767px) {
+    #header {
+        margin-top: 50px;
+        width: 100%;
+        padding: 0;
+        font-size: 13px;
+        margin-bottom: 0;
+    }
+
+    .levelsDiv #levels {
+        font-size: 14px;
+    }
+
+    .levelsDiv label {
+        display: none;
+    }
+
+    .mistakeDiv {
+        margin-left: 40px;
+        margin-right: 10px;
+    }
 }
 
 .mistakeDiv span>span {
@@ -118,6 +148,15 @@ body {
     cursor: pointer;
 }
 
+@media screen and (max-width:767px) {
+    #newGameBtn {
+        position: absolute;
+        top: -50px;
+        right: 0;
+        font-size: 13px;
+    }
+}
+
 #newGameBtn:hover {
     filter: brightness(1.1);
     transition: filter .2s ease-in-out;
@@ -134,12 +173,19 @@ body {
     padding: 10px;
 }
 
+@media screen and (max-width:767px) {
+    #gameBody {
+        flex-direction: column;
+    }
+}
+
 .leftSide {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
 }
+
 
 /****************************************gameArea styles***********************************/
 #gameArea {
@@ -173,23 +219,32 @@ body {
     cursor: pointer;
 }
 
-@keyframes hintCellSign{
-    0%{
+@media screen and (max-width:767px) {
+    .cell {
+        width: 38px;
+        height: 38px;
+    }
+}
+
+@keyframes hintCellSign {
+    0% {
         opacity: 0;
         background-color: #D83F31;
     }
-    50%{
+
+    50% {
         background-color: #D83F31;
     }
-    100%{
+
+    100% {
         opacity: 1;
         background-color: #adb6c2;
         color: white;
     }
 }
 
-.hintCell{
-    animation: hintCellSign 5s ;
+.hintCell {
+    animation: hintCellSign 5s;
 }
 
 .cell:nth-child(27n+19),
@@ -236,6 +291,11 @@ body {
     justify-content: center;
 }
 
+@media screen and (max-width:767px) {
+    #keyArea {
+        height: 100%;
+    }
+}
 
 /********************************topSection styles***************************************/
 #topSection {
@@ -319,6 +379,35 @@ span {
     border-radius: 50%;
 }
 
+@media screen and (max-width:767px) {
+    #topSection {
+        margin-bottom: 10px;
+        gap: 25px;
+    }
+
+    #topSection div {
+        gap: 5px;
+    }
+
+    #topSection .imgDiv {
+        width: 60px;
+    }
+
+    #topSection>div>span {
+        font-weight: 500;
+        font-size: 14px;
+    }
+
+    #onOff {
+        right: -15px;
+    }
+
+    #hintCount {
+        right: -10px;
+        font-size: 14px;
+    }
+
+}
 
 /**********************************Numpad styles*******************************************************/
 #numPad {
@@ -344,6 +433,20 @@ span {
 
 .number:hover {
     background-color: #d2dce9;
+}
+
+@media screen and (max-width:767px) {
+    #numPad {
+        grid-template-columns: repeat(9, 1fr);
+        grid-template-rows: none;
+        gap: 1px;
+    }
+
+    .number {
+        padding: 0 6px;
+        font-size: 48px;
+        background-color: #fff;
+    }
 }
 
 #overlay {
@@ -426,7 +529,7 @@ span {
     text-align: center;
 }
 
-.modalBody .modalBodyHeader{
+.modalBody .modalBodyHeader {
     padding-bottom: 10px;
     border-bottom: 1px solid #d2dce9;
 }
@@ -484,18 +587,16 @@ span {
     color: #5a7bc0;
 }
 
-.noteBoard{
+.noteBoard {
+    padding: 0;
     width: 100%;
     height: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    /* gap: 1px; */
-    /* background-color: #cad9f7; */
-    /* padding: 2px; */
 }
 
-.noteCell{
+.noteCell {
     color: #325aaf;
     display: flex;
     align-items: center;
@@ -503,4 +604,5 @@ span {
     font-size: 9px;
     font-weight: bold;
     cursor: pointer;
+    margin: 0;
 }

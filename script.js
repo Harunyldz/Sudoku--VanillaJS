@@ -40,7 +40,7 @@ let hintCount = 3
 let getUnOpenedCellsArray = []
 let lastClickedCellsIndexes = []
 let isNotesActive = false
-let selectedNotesArray=[]
+let selectedNotesArray = []
 
 import levels from "./utils/levels.js"
 
@@ -88,7 +88,7 @@ numbers.forEach(number => {
 
                 } else {
                     if (currentCell.querySelector("div")) {//eğer seçili hücrede notlar varsa notları kaldır ve text contenti temizle
-                        removeNoteBoard(currentCell,selectedCellIndex)
+                        removeNoteBoard(currentCell, selectedCellIndex)
                         currentCell.textContent = ""
                     }
                     const getCellValue = currentCell.getAttribute("data-cell-value")//seçilen hücrede olması gereken değeri getirdi
@@ -193,10 +193,15 @@ undoDiv.addEventListener("click", () => {
 
 deleteDiv.addEventListener("click", () => {
     if (selectedCellIndex >= 0) {
-        //geri al işlemini sağlamak için var olan değer diziye eklenip sonra text content temizlenecek
-        lastClickedCellsIndexes.push({ cellindex: selectedCellIndex, value: cells[selectedCellIndex].textContent })
-        cells[selectedCellIndex].textContent = ""
-        cells[selectedCellIndex].setAttribute("data-selected-value", "")// play ikonuna tıklandığında seçilmiş olan değeri gösterebilmek için
+        if (cells[selectedCellIndex].querySelector("div")) {
+            removeNoteBoard(cells[selectedCellIndex], selectedCellIndex)
+            cells[selectedCellIndex].textContent = ""
+        } else {
+            //geri al işlemini sağlamak için var olan değer diziye eklenip sonra text content temizlenecek
+            lastClickedCellsIndexes.push({ cellindex: selectedCellIndex, value: cells[selectedCellIndex].textContent })
+            cells[selectedCellIndex].textContent = ""
+            cells[selectedCellIndex].setAttribute("data-selected-value", "")// play ikonuna tıklandığında seçilmiş olan değeri gösterebilmek için
+        }
     }
 })
 
@@ -406,13 +411,13 @@ function continueGame() {
     playIcon.style.display = "none"
 
     //pauseGame fonk. çalıştığında textcontentler silindiğinden tekrar gösterebilmek için
-    cells.forEach((cell,index)=> {
+    cells.forEach((cell, index) => {
         if (cell.getAttribute("data-isOpen")) {
             cell.textContent = cell.getAttribute("data-cell-value")
         } if (cell.getAttribute("data-selected-value")) {
             cell.textContent = cell.getAttribute("data-selected-value")
         }
-        showSelectedNotes(cell,index)
+        showSelectedNotes(cell, index)
     })
     pausePlayImg.src = "./assets/pause.svg"
     startTimer()
@@ -487,13 +492,12 @@ function createNoteBoard(selectedNoteCell) {
 
 function addSelectedNoteCells(cellIndex, noteIndex) {
     const index = isCellHasNoteBoard(cellIndex)
-    const selectedCellIndexInArray = selectedNotesArray.findIndex(item => item.index === cellIndex)
     if (index !== -1) {//eğer seçilen hücreye daha önce de note eklenmişse
-        if(!selectedNotesArray[index].notes.includes(noteIndex)){ //eğer seçilen note değeri dizide yoksa diziye ekle
+        if (!selectedNotesArray[index].notes.includes(noteIndex)) { //eğer seçilen note değeri dizide yoksa diziye ekle
             selectedNotesArray[index].notes.push(noteIndex)
-        }else{
-            const getIndexofNoteCell=selectedNotesArray[index].notes.indexOf(noteIndex)//eğer seçilen not değeri dizide varsa indexini al
-            selectedNotesArray[index].notes.splice(getIndexofNoteCell,1) //alınan indexteki değeri diziden çıkar
+        } else {
+            const getIndexofNoteCell = selectedNotesArray[index].notes.indexOf(noteIndex)//eğer seçilen not değeri dizide varsa indexini al
+            selectedNotesArray[index].notes.splice(getIndexofNoteCell, 1) //alınan indexteki değeri diziden çıkar
         }
     } else {//seçilen hücreye ilk kez note ekleniyorsa
         selectedNotesArray.push({ index: cellIndex, notes: [noteIndex] })
@@ -526,12 +530,12 @@ function showSelectedNotes(selectedNoteCell, cellIndex) {
         })
     }
 }
-function removeNoteBoard(selectedNoteCell,cellIndex) {
+function removeNoteBoard(selectedNoteCell, cellIndex) {
     const deletedBoardDiv = selectedNoteCell.querySelector("div")
     if (deletedBoardDiv) {
         deletedBoardDiv.style.display = "none"
     }
-    const removeNoteIndex=selectedNotesArray.findIndex(item=>item.index===cellIndex)
+    const removeNoteIndex = selectedNotesArray.findIndex(item => item.index === cellIndex)
     console.log(removeNoteIndex)
-    selectedNotesArray.splice(removeNoteIndex,1)
+    selectedNotesArray.splice(removeNoteIndex, 1)
 }
