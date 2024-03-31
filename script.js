@@ -20,14 +20,17 @@ const newGameBtn = document.getElementById("newGameBtn")
 const notesDiv = document.getElementById("notesDiv")
 const notesImg = document.getElementById("notesImg")
 const onOffSpan = document.getElementById("onOff")
+const scoreSpan = document.getElementById("score")
 
-
-//Note mevzusundaki değişmleri kontrol et yeni oyun açılırsa vs  note silmeyi ekle ayrıca her hücreye ayrı not eklenebilmesini sağla
+//puanlamayı yap ve oyun bitiminde gözükecek modalı yap
 let isGameStarted = true
 let selectedNumber = ""
 let selectedCellIndex = ""
 let openedCellCount = 40
 let selectedLevel = "easy"
+let basePoint
+let score = 0
+let moveTime = 0
 let openedCellIndexes = []
 let second = 0
 let minute = 0
@@ -101,6 +104,9 @@ numbers.forEach(number => {
                     } else {
                         currentCell.textContent = selectedNumber
                         mistakeCount = getCellValue === selectedNumber ? mistakeCount : mistakeCount += 1
+                        if (getCellValue === selectedNumber) {
+                            setScore()
+                        }
                         currentCell.setAttribute("data-selected-value", selectedNumber)
                     }
                     console.log("selcted ındex value cahged: ", currentCell.textContent)
@@ -116,7 +122,7 @@ numbers.forEach(number => {
                         clearInterval(gameTimer)
                         isGameStarted = false
                     }
-                    displayMistakes(mistakeCount)
+                    displayMistakes()
                 }
 
             }
@@ -230,6 +236,8 @@ hintDiv.addEventListener("click", () => {
             hintCell.style.color = "#325aaf"
             displayHintCounts()
             console.log("unopenedcells: ", getUnOpenedCellsArray)
+            score=score+basePoint
+            displayScore()
         }
         getUnOpenedCellsArray.length = 0//açılmamış hücreleri gösteren diziyi sıfırla
     }
@@ -337,6 +345,8 @@ function displayBoard() {
 //seviyeyi ayarla
 function setLevel() {
     openedCellCount = levels[selectedLevel].openedCellCount
+    basePoint = levels[selectedLevel].basePoint
+    console.log("puan: ", basePoint)
     console.log("openedCellCount: " + openedCellCount)
 }
 
@@ -381,6 +391,7 @@ function clearTimer() {
     second = 0
     minute = 0
     hour = 0
+    moveTime = 0
     displayTime()
 }
 
@@ -441,6 +452,7 @@ function clearGame() {
     lastClickedCellsIndexes.length = 0 //son tıklananlar dizisini sıfırla
     selectedCellIndex = ""
     isNotesActive = false
+    score = 0
 }
 
 function getNewGame() {
@@ -452,6 +464,7 @@ function getNewGame() {
     startTimer()
     displayMistakes()
     displayHintCounts()
+    displayScore()
     isGameStarted = true
 }
 
@@ -538,4 +551,98 @@ function removeNoteBoard(selectedNoteCell, cellIndex) {
     const removeNoteIndex = selectedNotesArray.findIndex(item => item.index === cellIndex)
     console.log(removeNoteIndex)
     selectedNotesArray.splice(removeNoteIndex, 1)
+}
+
+function displayScore() {
+    scoreSpan.textContent = score > 0 ? score : "0"
+}
+
+function setScore() {
+
+    let timeInterval = time - moveTime
+    let point
+    if (timeInterval <= 5) {
+        point = getBonusPoint(basePoint)
+    } else if (timeInterval <= 10) {
+        point = getBonusPoint(basePoint - basePoint * 10 / 100)
+    } else if (timeInterval <= 20) {
+        point = getBonusPoint(basePoint - basePoint * 20 / 100)
+    } else if (timeInterval <= 35) {
+        point = getBonusPoint(basePoint - basePoint * 30 / 100)
+    } else if (timeInterval <= 60) {
+        point = getBonusPoint(basePoint - basePoint * 50 / 100)
+    } else {
+        point = getBonusPoint(basePoint - basePoint * 80 / 100)
+    }
+    score = score + point
+    displayScore()
+    moveTime = time
+}
+
+function getBonusPoint(basePoint) {
+    const [newCells, rowIndex, colIndex] = getTwoDimensionalCells() //array destructuring ile newCells,rowIndex,colIndex alındı 
+    const isColFulled = isColFull(newCells, colIndex)
+    const isRowFulled = isRowFull(newCells, rowIndex)
+    const isBoxFulled = isBoxFull(newCells, colIndex, rowIndex)
+    let bonusPoint
+    if (isBoxFulled && isColFulled && isRowFulled) {
+        bonusPoint = 15 * basePoint
+    } else if (isColFulled && isRowFulled) {
+        bonusPoint = 10 * basePoint
+    } else if (isBoxFulled || isColFulled || isRowFulled) {
+        bonusPoint = 5 * basePoint
+    } else {
+        bonusPoint = basePoint
+    }
+    return bonusPoint
+}
+function getTwoDimensionalCells() {
+    let colIndex = selectedCellIndex % 9
+    let rowIndex = Math.floor(selectedCellIndex / 9)
+    let newCells = []
+
+    //Tek boyutlu olan cells dizisini kontrolleri daha rahat yapabilmek için 2 boyutlu hale dönüştürüp newCells dizisine atadım
+    for (let i = 0; i < 9; i++) {
+        newCells[i] = []
+        for (let j = 0; j < 9; j++) {
+            const index = i * 9 + j
+            newCells[i][j] = cells[index]
+        }
+    }
+    return [newCells, rowIndex, colIndex]
+}
+
+//seçilen hücrenin bulunduğu sütunun tamamı doğru ve dolu mu
+function isColFull(newCells, colIndex) {
+    for (let i = 0; i < 9; i++) {
+        if (newCells[i][colIndex].textContent !== newCells[i][colIndex].getAttribute("data-cell-value")) {
+            return false
+        }
+    }
+    return true//aynı sütundaki tüm hücreler doğru dolmuş
+}
+
+//seçilen hücrenin bulunduğu satırın tamamı doğru ve dolu mu
+function isRowFull(newCells, rowIndex) {
+    for (let i = 0; i < 9; i++) {
+        if (newCells[rowIndex][i].textContent !== newCells[rowIndex][i].getAttribute("data-cell-value")) {
+            return false
+        }
+    }
+    return true //aynı satırdaki tüm hücreler doğru dolmuş
+}
+
+//3*3 karenin tamamı doğru rakmlarla dolu mu
+function isBoxFull(newCells, colIndex, rowIndex) {
+    const startRow = Math.floor(rowIndex / 3) * 3;//seçili hücrenin bulunduğu 3*3 lük karenin ilk satır indisi
+    const startCol = Math.floor(colIndex / 3) * 3;//seçili hücrenin bulunduğu 3*3 lük karenin ilk sütun indisi
+
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            if (newCells[startRow + i][startCol + j].textContent !== newCells[startRow + i][startCol + j].getAttribute("data-cell-value")) {
+                return false;
+            }
+        }
+    }
+    return true;//3*3 lük karedeki tüm hücreler doğru dolmuş
 }
