@@ -20,11 +20,11 @@
             <div class="levelsDiv">
                 <label for="levels">Zorluk: </label>
                 <select name="levels" id="levels">
-                    <option value="easy">Kolay</option>
-                    <option value="middle">Orta</option>
-                    <option value="hard">Zor</option>
-                    <option value="expert">Uzman</option>
-                    <option value="master">Usta</option>
+                    <option value="kolay">Kolay</option>
+                    <option value="orta">Orta</option>
+                    <option value="zor">Zor</option>
+                    <option value="uzman">Uzman</option>
+                    <option value="usta">Usta</option>
                 </select>
             </div>
             <div class="mistakeDiv">
@@ -194,15 +194,92 @@
                 <p>Oyundaki mevcut ilerleme kaybedilecek</p>
             </div>
             <div class="modalLevels">
-                <div class="modalLevelItem modalItem" data-level-value="easy"><img src="./assets/sudoku.svg" alt="">Kolay</div>
-                <div class="modalLevelItem modalItem" data-level-value="middle"><img src="./assets/sudoku.svg" alt="">Orta</div>
-                <div class="modalLevelItem modalItem" data-level-value="hard"><img src="./assets/sudoku.svg" alt="">Zor</div>
-                <div class="modalLevelItem modalItem" data-level-value="expert"><img src="./assets/sudoku.svg" alt="">Uzman</div>
-                <div class="modalLevelItem modalItem" data-level-value="master"><img src="./assets/sudoku.svg" alt="">Usta</div>
+                <div class="modalLevelItem modalItem" data-level-value="easy"><img src="./assets/sudoku.svg"
+                        alt="">Kolay</div>
+                <div class="modalLevelItem modalItem" data-level-value="middle"><img src="./assets/sudoku.svg"
+                        alt="">Orta</div>
+                <div class="modalLevelItem modalItem" data-level-value="hard"><img src="./assets/sudoku.svg" alt="">Zor
+                </div>
+                <div class="modalLevelItem modalItem" data-level-value="expert"><img src="./assets/sudoku.svg"
+                        alt="">Uzman</div>
+                <div class="modalLevelItem modalItem" data-level-value="master"><img src="./assets/sudoku.svg"
+                        alt="">Usta</div>
                 <div class="modalItem" id="modalRestartBtn"><img src="./assets/back.svg" alt="">Yeniden Başla</div>
             </div>
         </div>
         <button id="modalCancelBtn">İptal</button>
+    </div>
+    <div class="winModal">
+        <div class="wrap">
+            <div class="gameStats">
+                <h1>Mükemmel! </h1>
+                <div class="stats">
+                    <div>
+                        <img src="./assets/star.svg" alt="">
+                        <div>
+                            <label for="gameScore">Puan</label>
+                            <span id="gameScore">6500</span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="./assets/stats.svg" alt="">
+                        <div>
+                            <label for="gameLevel">Zorluk</label>
+                            <span id="gameLevel">Kolay</span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="./assets/timer.svg" alt="">
+                        <div>
+                            <label for="gameTime">Süre</label>
+                            <span><span id="gameHour"></span><span id="gameMinute"></span><span id="gameSecond"></span></span>
+                        </div>
+                    </div>
+                </div>
+                <button id="winModalBtn">Yeni Oyun</button>
+            </div>
+            <div class="bestScores">
+                <img src="./assets/winners.svg" alt="">
+                <h3>En Yüksek Puanlar</h3>
+                <div class="bestScoresItems">
+                    <div class="bestScoreItem">
+                        <div>
+                            <span class="bestScoreItemLevel">Kolay</span>
+                            <span class="bestScoreItemFirst">6500</span>
+                        </div>
+                        <ul class="bestScoreItemList">
+                            <li><img src="./assets/one.svg" alt=""> <span>5:16</span><span>6500</span></li>
+                            <li><img src="./assets/two.svg" alt=""> <span>5:16</span><span>6500</span></li>
+                            <li><img src="./assets/three.svg" alt=""> <span>5:16</span><span>6500</span></li>
+                        </ul>
+                    </div>
+                    <div class="bestScoreItem">
+                        <div>
+                            <span class="bestScoreItemLevel">Orta</span>
+                            <span class="bestScoreItemFirst">6500</span>
+                        </div>
+                    </div>
+                    <div class="bestScoreItem">
+                        <div>
+                            <span class="bestScoreItemLevel">Zor</span>
+                            <span class="bestScoreItemFirst">6500</span>
+                        </div>
+                    </div>
+                    <div class="bestScoreItem">
+                        <div>
+                            <span class="bestScoreItemLevel">Uzman</span>
+                            <span class="bestScoreItemFirst">6500</span>
+                        </div>
+                    </div>
+                    <div class="bestScoreItem">
+                        <div>
+                            <span class="bestScoreItemLevel">Usta</span>
+                            <span class="bestScoreItemFirst">6500</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 

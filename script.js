@@ -21,13 +21,14 @@ const notesDiv = document.getElementById("notesDiv")
 const notesImg = document.getElementById("notesImg")
 const onOffSpan = document.getElementById("onOff")
 const scoreSpan = document.getElementById("score")
+const winModal = document.querySelector(".winModal")
 
-//puanlamayı yap ve oyun bitiminde gözükecek modalı yap
+// oyun bitiminde gözükecek modalı ve oyun bitiminde oluşacak animasyonu yap
 let isGameStarted = true
 let selectedNumber = ""
 let selectedCellIndex = ""
 let openedCellCount = 40
-let selectedLevel = "easy"
+let selectedLevel = "kolay"
 let basePoint
 let score = 0
 let moveTime = 0
@@ -106,6 +107,9 @@ numbers.forEach(number => {
                         mistakeCount = getCellValue === selectedNumber ? mistakeCount : mistakeCount += 1
                         if (getCellValue === selectedNumber) {
                             setScore()
+                            if (isGameFinished()) {
+                                openWinModal()
+                            }
                         }
                         currentCell.setAttribute("data-selected-value", selectedNumber)
                     }
@@ -236,7 +240,7 @@ hintDiv.addEventListener("click", () => {
             hintCell.style.color = "#325aaf"
             displayHintCounts()
             console.log("unopenedcells: ", getUnOpenedCellsArray)
-            score=score+basePoint
+            score = score + basePoint
             displayScore()
         }
         getUnOpenedCellsArray.length = 0//açılmamış hücreleri gösteren diziyi sıfırla
@@ -445,6 +449,7 @@ function clearGame() {
         cell.setAttribute("data-isOpen", "")
         cell.setAttribute("data-selected-value", "")
         cell.classList.remove("hintCell")
+        cell.classList.remove("fullCell")
     })
     clearTimer()
     mistakeCount = 0
@@ -619,6 +624,15 @@ function isColFull(newCells, colIndex) {
             return false
         }
     }
+    for (let k = 0; k < 9; k++) {
+        if (newCells[k][colIndex].classList.contains("fullCell")) {
+            newCells[k][colIndex].classList.remove("fullCell")
+        }
+        setTimeout(() => {//tüm sütun doluysa hücrelere fullcell animasyonu ekle
+            newCells[k][colIndex].classList.add("fullCell")
+        }, 100 * k);
+    }
+
     return true//aynı sütundaki tüm hücreler doğru dolmuş
 }
 
@@ -628,6 +642,14 @@ function isRowFull(newCells, rowIndex) {
         if (newCells[rowIndex][i].textContent !== newCells[rowIndex][i].getAttribute("data-cell-value")) {
             return false
         }
+    }
+    for (let k = 0; k < 9; k++) {
+        if (newCells[rowIndex][k].classList.contains("fullCell")) {
+            newCells[rowIndex][k].classList.remove("fullCell")
+        }
+        setTimeout(() => {//tüm satır doluysa hücrelere fullcell animasyonu ekle
+            newCells[rowIndex][k].classList.add("fullCell")
+        }, 100 * k);
     }
     return true //aynı satırdaki tüm hücreler doğru dolmuş
 }
@@ -644,5 +666,44 @@ function isBoxFull(newCells, colIndex, rowIndex) {
             }
         }
     }
+    for (let k = 0; k < 3; k++) {
+        for (let l = 0; l < 3; l++) {
+            if (newCells[startRow + k][startCol + l].classList.contains("fullCell")) {
+                newCells[startRow + k][startCol + l].classList.remove("fullCell")
+            }
+            setTimeout(() => { //tüm 3*3 lük kare doluysa hücrelere fullcell animasyonu ekle
+                newCells[startRow + k][startCol + l].classList.add("fullCell")
+            }, 100 * k);
+        }
+    }
     return true;//3*3 lük karedeki tüm hücreler doğru dolmuş
+}
+
+function isGameFinished() {
+    let isFinished = true
+    cells.forEach(cell => {
+        if (cell.textContent !== cell.getAttribute("data-cell-value")) {
+            isFinished = false
+        }
+    })
+    return isFinished
+}
+function displayWinScores() {
+    const gameScoreSpan = document.getElementById("gameScore")
+    const gameLevelSpan = document.getElementById("gameLevel")
+    const gameHourSpan = document.getElementById("gameHour")
+    const gameMinuteSpan = document.getElementById("gameMinute")
+    const gameSecondSpan = document.getElementById("gameSecond")
+
+    gameScoreSpan.textContent = score
+    gameLevelSpan.textContent =selectLevels.value.charAt(0).toUpperCase()+selectLevels.value.slice(1);//Baş harfi büyük olsun diye
+    gameSecondSpan.textContent = second > 9 ? second : "0" + second
+    gameMinuteSpan.textContent = minute > 9 ? minute + ":" : "0" + minute + ":"
+    gameHourSpan.style.visibility = hour > 0 ? "visible" : "hidden"
+    gameHourSpan.textContent = hour > 9 ? hour + ":" : "0" + hour + ":"
+}
+
+function openWinModal() {
+    winModal.style.display = "flex"
+    displayWinScores()
 }

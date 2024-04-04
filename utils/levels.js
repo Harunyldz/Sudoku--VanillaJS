@@ -1,21 +1,21 @@
 const levels={
-    easy:{
+    kolay:{
         openedCellCount:40,
         basePoint:50,
     },
-    middle:{
+    orta:{
         openedCellCount:34,
         basePoint:100,
     },
-    hard:{
+    zor:{
         openedCellCount:28,
         basePoint:150,
     },
-    expert:{
+    uzman:{
         openedCellCount:24,
         basePoint:200
     },
-    master:{
+    usta:{
         openedCellCount:20,
         basePoint:250
     }
