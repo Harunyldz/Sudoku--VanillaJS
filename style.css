@@ -642,13 +642,13 @@ span {
 /**********************************Win-Modal styles*******************************************************/
 .winModal {
     width: 50%;
+    height:auto;
     background-color: #5a7bc0;
     padding: 20px;
     border-radius: 10px;
     position: absolute;
-    /* display: flex; */
-    align-items: center;
-    justify-content: center;
+    /* display: grid; */
+    place-items: center;
     z-index: 1000;
     color: #fff;
     display: none;
@@ -659,7 +659,6 @@ span {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    padding: 10px;
 }
 
 .winModal .wrap .gameStats {
@@ -690,8 +689,6 @@ span {
     gap: 20px;
 }
 
-
-
 .winModal .wrap .gameStats .stats div img {
     width: 25px;
 }
@@ -719,6 +716,43 @@ span {
 #winModalBtn:hover {
     color: #5a7bc0;
     transition: .2s;
+}
+
+@media screen and (max-width:767px) {
+    .winModal {
+        width: 80%;
+        height: 90svh;
+    }
+
+    .winModal .wrap {
+        flex-direction: column;
+        padding: 5px 10px;
+    }
+
+    .winModal .wrap .gameStats {
+        width: 100%;
+        gap: 10px;
+    }
+
+    .gameStats h1 {
+        font-size: 20px;
+    }
+
+    .winModal .wrap .gameStats .stats {
+        padding: 10px 10px;
+    }
+    .winModal .wrap .gameStats .stats div img {
+        width: 15px;
+    }
+    .winModal .wrap .gameStats .stats div div {
+        padding: 5px 0;
+        font-size: 14px;
+    }
+
+    #winModalBtn {
+        height: 40px;
+        font-size: 14px;
+    }
 }
 
 .bestScores {
@@ -757,6 +791,7 @@ span {
 
 .bestScores .bestScoresItems .bestScoreItem ul {
     list-style: none;
+    padding: 5px 0;
     /* display: none; */
 }
 
@@ -764,10 +799,41 @@ span {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(184, 217, 247, 0.35);
     font-size: 14px;
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+
+.bestScores .bestScoresItems .bestScoreItem ul li:nth-child(odd){
+    background: rgba(184, 217, 247, 0.4);
 }
 
 .bestScores .bestScoresItems .bestScoreItem ul li img {
     width: 15px;
+}
+
+@media screen and (max-width:767px) {
+    .bestScores {
+        width: 100%;
+        gap: 5px;
+        margin-top: 20px;
+    }
+
+    .bestScores img {
+        width: 30px;
+    }
+
+    .bestScores h3{
+        font-size: 16px;
+    }
+    .bestScores .bestScoresItems{
+        padding:0 10px;
+        font-size: 14px;
+    }
+    .bestScores .bestScoresItems .bestScoreItem ul li {
+        font-size: 12px;
+    }
+    .bestScores .bestScoresItems .bestScoreItem ul li img {
+        width: 12px;
+    }
 }

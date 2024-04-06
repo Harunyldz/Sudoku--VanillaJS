@@ -47,7 +47,7 @@ let isNotesActive = false
 let selectedNotesArray = []
 
 import levels from "./utils/levels.js"
-
+// openWinModal()
 getNewGame()
 
 cells.forEach((cell, index) => {
@@ -705,5 +705,6 @@ function displayWinScores() {
 
 function openWinModal() {
     winModal.style.display = "flex"
+    overlay.style.display="block"
     displayWinScores()
 }
