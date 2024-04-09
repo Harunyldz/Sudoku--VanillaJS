@@ -194,16 +194,16 @@
                 <p>Oyundaki mevcut ilerleme kaybedilecek</p>
             </div>
             <div class="modalLevels">
-                <div class="modalLevelItem modalItem" data-level-value="easy"><img src="./assets/sudoku.svg"
+                <div class="modalLevelItem modalItem" data-level-value="kolay"><img src="./assets/sudoku.svg"
                         alt="">Kolay</div>
-                <div class="modalLevelItem modalItem" data-level-value="middle"><img src="./assets/sudoku.svg"
-                        alt="">Orta</div>
-                <div class="modalLevelItem modalItem" data-level-value="hard"><img src="./assets/sudoku.svg" alt="">Zor
+                <div class="modalLevelItem modalItem" data-level-value="orta"><img src="./assets/sudoku.svg" alt="">Orta
                 </div>
-                <div class="modalLevelItem modalItem" data-level-value="expert"><img src="./assets/sudoku.svg"
+                <div class="modalLevelItem modalItem" data-level-value="zor"><img src="./assets/sudoku.svg" alt="">Zor
+                </div>
+                <div class="modalLevelItem modalItem" data-level-value="uzman"><img src="./assets/sudoku.svg"
                         alt="">Uzman</div>
-                <div class="modalLevelItem modalItem" data-level-value="master"><img src="./assets/sudoku.svg"
-                        alt="">Usta</div>
+                <div class="modalLevelItem modalItem" data-level-value="usta"><img src="./assets/sudoku.svg" alt="">Usta
+                </div>
                 <div class="modalItem" id="modalRestartBtn"><img src="./assets/back.svg" alt="">Yeniden Başla</div>
             </div>
         </div>
@@ -232,7 +232,8 @@
                         <img src="./assets/timer.svg" alt="">
                         <div>
                             <label for="gameTime">Süre</label>
-                            <span><span id="gameHour"></span><span id="gameMinute"></span><span id="gameSecond"></span></span>
+                            <span><span id="gameHour"></span><span id="gameMinute"></span><span
+                                    id="gameSecond"></span></span>
                         </div>
                     </div>
                 </div>
@@ -242,40 +243,60 @@
                 <img src="./assets/winners.svg" alt="">
                 <h3>En Yüksek Puanlar</h3>
                 <div class="bestScoresItems">
-                    <div class="bestScoreItem">
+                    <div class="bestScoreItem" id="bestEasyUl" data-level-value="kolay">
                         <div>
                             <span class="bestScoreItemLevel">Kolay</span>
-                            <span class="bestScoreItemFirst">6500</span>
+                            <span class="bestScoreItemFirst" id="bestEasy"></span>
                         </div>
                         <ul class="bestScoreItemList">
-                            <li><img src="./assets/one.svg" alt=""> <span>5:16</span><span>6500</span></li>
-                            <li><img src="./assets/two.svg" alt=""> <span>5:16</span><span>6500</span></li>
-                            <li><img src="./assets/three.svg" alt=""> <span>5:16</span><span>6500</span></li>
+                            <li><img src="./assets/one.svg" alt=""> <span></span></li>
+                            <li><img src="./assets/two.svg" alt=""> <span></span></li>
+                            <li><img src="./assets/three.svg" alt=""> <span></span></li>
                         </ul>
                     </div>
-                    <div class="bestScoreItem">
+                    <div class="bestScoreItem" id="bestMiddleUl" data-level-value="orta">
                         <div>
                             <span class="bestScoreItemLevel">Orta</span>
-                            <span class="bestScoreItemFirst">6500</span>
+                            <span class="bestScoreItemFirst" id="bestMiddle"></span>
                         </div>
+                        <ul class="bestScoreItemList">
+                            <li><img src="./assets/one.svg" alt=""> <span></span></li>
+                            <li><img src="./assets/two.svg" alt=""> <span></span></li>
+                            <li><img src="./assets/three.svg" alt=""> <span></span></li>
+                        </ul>
                     </div>
-                    <div class="bestScoreItem">
+                    <div class="bestScoreItem" id="bestHardUl" data-level-value="zor">
                         <div>
                             <span class="bestScoreItemLevel">Zor</span>
-                            <span class="bestScoreItemFirst">6500</span>
+                            <span class="bestScoreItemFirst" id="bestHard"></span>
                         </div>
+                        <ul class="bestScoreItemList">
+                            <li><img src="./assets/one.svg" alt=""> <span></span></li>
+                            <li><img src="./assets/two.svg" alt=""> <span></span></li>
+                            <li><img src="./assets/three.svg" alt=""> <span></span></li>
+                        </ul>
                     </div>
-                    <div class="bestScoreItem">
+                    <div class="bestScoreItem" id="bestExpertUl" data-level-value="uzman">
                         <div>
                             <span class="bestScoreItemLevel">Uzman</span>
-                            <span class="bestScoreItemFirst">6500</span>
+                            <span class="bestScoreItemFirst" id="bestExpert"></span>
                         </div>
+                        <ul class="bestScoreItemList">
+                            <li><img src="./assets/one.svg" alt=""> <span></span></li>
+                            <li><img src="./assets/two.svg" alt=""> <span></span></li>
+                            <li><img src="./assets/three.svg" alt=""> <span></span></li>
+                        </ul>
                     </div>
-                    <div class="bestScoreItem">
+                    <div class="bestScoreItem" id="bestMasterUl" data-level-value="usta">
                         <div>
                             <span class="bestScoreItemLevel">Usta</span>
-                            <span class="bestScoreItemFirst">6500</span>
+                            <span class="bestScoreItemFirst" id="bestMaster"></span>
                         </div>
+                        <ul class="bestScoreItemList">
+                            <li><img src="./assets/one.svg" alt=""> <span></span></li>
+                            <li><img src="./assets/two.svg" alt=""> <span></span></li>
+                            <li><img src="./assets/three.svg" alt=""> <span></span></li>
+                        </ul>
                     </div>
                 </div>
             </div>

@@ -22,8 +22,10 @@ const notesImg = document.getElementById("notesImg")
 const onOffSpan = document.getElementById("onOff")
 const scoreSpan = document.getElementById("score")
 const winModal = document.querySelector(".winModal")
+const winModalBtn = document.getElementById("winModalBtn")
+const bestScoreItems = document.querySelectorAll(".bestScoreItem")
 
-// oyun bitiminde gözükecek modalı ve oyun bitiminde oluşacak animasyonu yap
+// bestscores u bitir   localStorage fonks. yap
 let isGameStarted = true
 let selectedNumber = ""
 let selectedCellIndex = ""
@@ -45,9 +47,9 @@ let getUnOpenedCellsArray = []
 let lastClickedCellsIndexes = []
 let isNotesActive = false
 let selectedNotesArray = []
+let bestScoresArray = []
 
 import levels from "./utils/levels.js"
-// openWinModal()
 getNewGame()
 
 cells.forEach((cell, index) => {
@@ -109,6 +111,7 @@ numbers.forEach(number => {
                             setScore()
                             if (isGameFinished()) {
                                 openWinModal()
+                                isGameStarted = false
                             }
                         }
                         currentCell.setAttribute("data-selected-value", selectedNumber)
@@ -202,30 +205,34 @@ undoDiv.addEventListener("click", () => {
 })
 
 deleteDiv.addEventListener("click", () => {
-    if (selectedCellIndex >= 0) {
-        if (cells[selectedCellIndex].querySelector("div")) {
-            removeNoteBoard(cells[selectedCellIndex], selectedCellIndex)
-            cells[selectedCellIndex].textContent = ""
-        } else {
-            //geri al işlemini sağlamak için var olan değer diziye eklenip sonra text content temizlenecek
-            lastClickedCellsIndexes.push({ cellindex: selectedCellIndex, value: cells[selectedCellIndex].textContent })
-            cells[selectedCellIndex].textContent = ""
-            cells[selectedCellIndex].setAttribute("data-selected-value", "")// play ikonuna tıklandığında seçilmiş olan değeri gösterebilmek için
+    if (isGameStarted) {
+        if (selectedCellIndex >= 0) {
+            if (cells[selectedCellIndex].querySelector("div")) {
+                removeNoteBoard(cells[selectedCellIndex], selectedCellIndex)
+                cells[selectedCellIndex].textContent = ""
+            } else {
+                //geri al işlemini sağlamak için var olan değer diziye eklenip sonra text content temizlenecek
+                lastClickedCellsIndexes.push({ cellindex: selectedCellIndex, value: cells[selectedCellIndex].textContent })
+                cells[selectedCellIndex].textContent = ""
+                cells[selectedCellIndex].setAttribute("data-selected-value", "")// play ikonuna tıklandığında seçilmiş olan değeri gösterebilmek için
+            }
         }
     }
 })
 
 notesDiv.addEventListener("click", () => {
-    if (!isNotesActive) {
-        notesImg.style.border = "2px solid #325aaf"
-        onOffSpan.textContent = "ON"
-        onOffSpan.style.backgroundColor = "#325aaf"
-        isNotesActive = true
-    } else {
-        notesImg.style.border = "none"
-        onOffSpan.textContent = "OFF"
-        onOffSpan.style.backgroundColor = "#adb6c2"
-        isNotesActive = false
+    if (isGameStarted) {
+        if (!isNotesActive) {
+            notesImg.style.border = "2px solid #325aaf"
+            onOffSpan.textContent = "ON"
+            onOffSpan.style.backgroundColor = "#325aaf"
+            isNotesActive = true
+        } else {
+            notesImg.style.border = "none"
+            onOffSpan.textContent = "OFF"
+            onOffSpan.style.backgroundColor = "#adb6c2"
+            isNotesActive = false
+        }
     }
 })
 
@@ -247,6 +254,49 @@ hintDiv.addEventListener("click", () => {
     }
 })
 
+winModalBtn.addEventListener("click", () => {
+    winModal.style.display = "none"
+    newGameModal.style.display = "block"
+})
+
+bestScoreItems.forEach(bestScoreItem => {
+    const ulElement = bestScoreItem.querySelector("ul");
+
+    let bestScoreItemLevel = bestScoreItem.getAttribute("data-level-value")
+    let selectedItem = bestScoresArray.find(item => item.level === bestScoreItemLevel)//tıklanan elemanın içerdiği level a sahip bestScoresArray elemanını getir
+
+    let isBlock = false
+    bestScoreItem.addEventListener("click", () => {
+        // Diğer tüm listeleri kapat
+        closeAllUl();
+        // Tıklanan öğenin altındaki liste görünür yap
+        if (ulElement && selectedItem) {
+            if ('scores' in selectedItem) { //Eğer tıklanan eleman scores özelliğine sahipse
+                if (!isBlock) {
+                    ulElement.style.display = "block";
+                    isBlock = true
+                } else {
+                    ulElement.style.display = "none";
+                    isBlock = false
+                }
+            } else {
+                ulElement.style.display = "none";
+                isBlock = false
+            }
+        }
+    });
+
+    bestScoreItem.querySelector("div").addEventListener("click", () => {
+        if (selectedItem) {
+            const liElements = ulElement.querySelectorAll("li");
+
+            for (let i = 0; i < selectedItem.scores.length; i++) {
+                const spanElement = liElements[i].querySelector("span")
+                spanElement.textContent = selectedItem.scores[i] //li lerin içindeki spanlara scores dizsindeki elemanları sırayala yerleştir
+            }
+        }
+    });
+});
 
 //*****************************************************************Functions*********************************************************
 //sudoku tahtasındaki rakamların hazırlanışı için gerekli fonksiyonlar
@@ -470,6 +520,7 @@ function getNewGame() {
     displayMistakes()
     displayHintCounts()
     displayScore()
+    getBestScores()
     isGameStarted = true
 }
 
@@ -696,7 +747,7 @@ function displayWinScores() {
     const gameSecondSpan = document.getElementById("gameSecond")
 
     gameScoreSpan.textContent = score
-    gameLevelSpan.textContent =selectLevels.value.charAt(0).toUpperCase()+selectLevels.value.slice(1);//Baş harfi büyük olsun diye
+    gameLevelSpan.textContent = selectLevels.value.charAt(0).toUpperCase() + selectLevels.value.slice(1);//Baş harfi büyük olsun diye
     gameSecondSpan.textContent = second > 9 ? second : "0" + second
     gameMinuteSpan.textContent = minute > 9 ? minute + ":" : "0" + minute + ":"
     gameHourSpan.style.visibility = hour > 0 ? "visible" : "hidden"
@@ -705,6 +756,53 @@ function displayWinScores() {
 
 function openWinModal() {
     winModal.style.display = "flex"
-    overlay.style.display="block"
+    overlay.style.display = "block"
     displayWinScores()
+    displayBestScores()
+    clearInterval(gameTimer)
+    console.log("bestScoresArray: ", bestScoresArray)
+    isGameStarted = false
+}
+
+function getBestScores() {
+    let selectedLevel = selectLevels.value
+    let selectedItem = bestScoresArray.find(item => item.level === selectedLevel)
+    if (selectedItem) {
+        selectedItem.scores.push(score)
+        selectedItem.scores.sort((a, b) => b - a)// score ları küçükten büyüğe sırala
+        if (selectedItem.scores.length > 3) {
+            selectedItem.scores = selectedItem.scores.slice(0, 3) //en yüksek 3 score u tut
+        }
+    } else {
+        bestScoresArray.push({ level: selectedLevel, scores: [score] });
+    }
+}
+
+function displayBestScores() {
+    getBestScores()
+    bestScoresArray.forEach(item => {
+        item.scores.sort((a, b) => b - a); //bütün score ları küçükten büyüğe sırala
+    });
+    const levels = ["kolay", "orta", "zor", "uzman", "usta"];
+    const scoreElements = {
+        kolay: document.getElementById("bestEasy"),
+        orta: document.getElementById("bestMiddle"),
+        zor: document.getElementById("bestHard"),
+        uzman: document.getElementById("bestExpert"),
+        usta: document.getElementById("bestMaster")
+    };
+
+    levels.forEach(level => {
+        const bestItem = bestScoresArray.find(item => item.level === level);
+        const bestScore = bestItem ? (bestItem.scores[0] || "-") : "-";
+        scoreElements[level].textContent = bestScore;
+    });
+
+}
+
+function closeAllUl() {
+    bestScoreItems.forEach(bestItem => {
+        const ulElement = bestItem.querySelector("ul");
+        ulElement.style.display = "none";
+    });
 }
