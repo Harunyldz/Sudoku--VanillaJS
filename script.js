@@ -50,6 +50,7 @@ let selectedNotesArray = []
 let bestScoresArray = []
 
 import levels from "./utils/levels.js"
+// openWinModal()
 getNewGame()
 
 cells.forEach((cell, index) => {
@@ -261,7 +262,6 @@ winModalBtn.addEventListener("click", () => {
 
 bestScoreItems.forEach(bestScoreItem => {
     const ulElement = bestScoreItem.querySelector("ul");
-
     let bestScoreItemLevel = bestScoreItem.getAttribute("data-level-value")
     let selectedItem = bestScoresArray.find(item => item.level === bestScoreItemLevel)//tıklanan elemanın içerdiği level a sahip bestScoresArray elemanını getir
 
@@ -287,13 +287,23 @@ bestScoreItems.forEach(bestScoreItem => {
     });
 
     bestScoreItem.querySelector("div").addEventListener("click", () => {
+        console.log(bestScoresArray)
+
+        let bestScoreItemLevel = bestScoreItem.getAttribute("data-level-value")
+        let selectedItem = bestScoresArray.find(item => item.level === bestScoreItemLevel)//tıklanan elemanın içerdiği level a sahip bestScoresArray elemanını getir
         if (selectedItem) {
+            console.log("çalıştı")
+            console.log("selectedItem: ", selectedItem)
             const liElements = ulElement.querySelectorAll("li");
 
             for (let i = 0; i < selectedItem.scores.length; i++) {
                 const spanElement = liElements[i].querySelector("span")
                 spanElement.textContent = selectedItem.scores[i] //li lerin içindeki spanlara scores dizsindeki elemanları sırayala yerleştir
             }
+        }
+        else {
+
+            console.log("selcted ıtem yok")
         }
     });
 });
@@ -521,6 +531,13 @@ function getNewGame() {
     displayHintCounts()
     displayScore()
     getBestScores()
+    const storedBestScoresArray = localStorage.getItem("bestScores")
+
+    console.log(storedBestScoresArray)
+    if (storedBestScoresArray) {
+        const retrievedBestScoresArray = JSON.parse(storedBestScoresArray)
+        bestScoresArray = retrievedBestScoresArray
+    }
     isGameStarted = true
 }
 
@@ -765,6 +782,7 @@ function openWinModal() {
 }
 
 function getBestScores() {
+
     let selectedLevel = selectLevels.value
     let selectedItem = bestScoresArray.find(item => item.level === selectedLevel)
     if (selectedItem) {
@@ -776,6 +794,8 @@ function getBestScores() {
     } else {
         bestScoresArray.push({ level: selectedLevel, scores: [score] });
     }
+    const jsonBestScoresArray = JSON.stringify(bestScoresArray)
+    localStorage.setItem("bestScores", jsonBestScoresArray)
 }
 
 function displayBestScores() {
